@@ -1,1 +1,1 @@
-# gu_python_client_server
+# Клиент-серверные приложения на Python
