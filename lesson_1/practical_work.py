@@ -64,31 +64,26 @@ print('task5', results)
 
 ### 6. Создать текстовый файл test_file.txt, заполнить его тремя строками: «сетевое программирование», «сокет»,
 # «декоратор». Проверить кодировку файла по умолчанию. Принудительно открыть файл в формате Unicode и
-# вывести его содержимое.
+# вывести его содержимое. Задача: открыть этот файл БЕЗ ОШИБОК вне зависимости от того, в какой кодировке он был создан.
 
 import chardet
 
 #
-print('task6', locale.getpreferredencoding())
+print('###### task6 ######')
+print('Default encoding: ', locale.getpreferredencoding())
 
-#
-# # UTF-8
-#
 lines = ['сетевое программирование\n', 'сокет\n', 'декоратор\n']
-with open  ('lesson_1/test_file.txt', 'w') as f:
+path = 'lesson_1/test_file.txt'
+
+with open  (path, encoding='windows-1251', mode='w') as f:
     f.writelines(lines)
+    print('File test_file.txt was created with windows-1251 encoding')
 
-with open('lesson_1/test_file.txt', 'rb') as f:
-    s = f.read()
-    print(s)
-    print(chardet.detect(s))
+with open(path, 'rb') as f:
+    text = f.read()
+    encoding = chardet.detect(text)['encoding']
 
-# b'\xd1\x81\xd0\xb5\xd1\x82\xd0\xb5\xd0\xb2\xd0\xbe\xd0\xb5 \xd0\xbf\xd1\x80\xd0\xbe\xd0\xb3\xd1\x80\xd0\xb0\xd0\xbc\xd0\xbc\xd0\xb8\xd1\x80\xd0\xbe\xd0\xb2\xd0\xb0\xd0\xbd\xd0\xb8\xd0\xb5\n\xd1\x81\xd0\xbe\xd0\xba\xd0\xb5\xd1\x82\n\xd0\xb4\xd0\xb5\xd0\xba\xd0\xbe\xd1\x80\xd0\xb0\xd1\x82\xd0\xbe\xd1\x80\n'
-# {'encoding': 'utf-8', 'confidence': 0.99, 'language': ''}
 
-with open('lesson_1/test_file.txt', encoding='windows-1251', errors='replace') as f:
-    print(f.read())
+with open(path, encoding=encoding, errors='replace') as f:
+    print('File read: ', f.read())
 
-# СЃРµС‚РµРІРѕРµ РїСЂРѕРіСЂР°РјРјРёСЂРѕРІР°РЅРёРµ
-# СЃРѕРєРµС‚
-# РґРµРєРѕСЂР°С‚РѕСЂ
