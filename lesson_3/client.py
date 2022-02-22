@@ -7,9 +7,11 @@
 # - port — tcp-порт на сервере, по умолчанию 7777.
 
 from sys import argv
-from socket import *
-from common.variables import *
-from common.utils import *
+from socket import socket, AF_INET, SOCK_STREAM
+from common.variables import DEFAULT_ADDRESS, DEFAULT_PORT
+from common.utils import send_message, get_message
+import time
+
 
 
 def msg_prepare(account_name='Guest'):
@@ -22,16 +24,15 @@ def msg_prepare(account_name='Guest'):
     }
     return msg
 
-def start_connection(addr='127.0.0.1', port=DEFAULT_PORT):
-    print(addr, port)
+
+def start_connection(addr=DEFAULT_ADDRESS, port=DEFAULT_PORT):
     s = socket(AF_INET, SOCK_STREAM)  # Создать сокет TCP
     s.connect((addr, port))  # Соединиться с сервером
+
     msg_to_sent = msg_prepare()
-    # print(msg_to_sent)
     send_message(s, msg_to_sent)
 
     msg = get_message(s)
-
     print("Сообщение от сервера: %s" % msg)
     s.close()
 
